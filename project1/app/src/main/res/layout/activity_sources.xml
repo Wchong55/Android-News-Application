@@ -20,12 +20,13 @@
         android:layout_width="351dp"
         android:layout_height="18dp"
         android:layout_marginTop="52dp"
+        android:entries="@array/categories_array"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_headlines"
+        android:id="@+id/recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="1dp"

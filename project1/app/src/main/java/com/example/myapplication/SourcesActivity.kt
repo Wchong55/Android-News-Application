@@ -2,10 +2,13 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.jetbrains.anko.doAsync
 
 class SourcesActivity : AppCompatActivity() {
 
@@ -22,6 +25,7 @@ class SourcesActivity : AppCompatActivity() {
 
         //Spinner code from the Spinner documentation page (19 - 30)
         val spinner: Spinner = findViewById(R.id.categories)
+        val cat: String = spinner.getSelectedItem().toString()
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -34,25 +38,54 @@ class SourcesActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
 
-        recyclerView = findViewById(R.id.news_headlines)
+        recyclerView = findViewById(R.id.recyclerview)
+
+        //Fake News
 
         val news = getFakeNews()
-        val adapter = NewsAdapter(news)
+        val adapter = SourceNewsAdapter(news)
         recyclerView.setAdapter(adapter)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        //Real News
+//        val newsManager = NewsManager()
+//        val apiKey = getString(R.string.news_key)
+//        doAsync {
+//
+//            val news: List<SourceNews> = try {
+//                newsManager.retrieveSourcesNews(cat, apiKey)
+//            } catch(exception: Exception) {
+//                Log.e("NewsActivity", "Retrieving News failed", exception)
+//                listOf<SourceNews>()
+//            }
+//
+//            runOnUiThread {
+//                if (news.isNotEmpty()) {
+//                    val adapter = SourceNewsAdapter(news)
+//                    recyclerView.setAdapter(adapter)
+//                    recyclerView.layoutManager = LinearLayoutManager(this@SourcesActivity)
+//                }
+//                else {
+//                    Toast.makeText(
+//                        this@SourcesActivity,
+//                        "Failed to retrieve News!",
+//                        Toast.LENGTH_LONG).show()
+//                }
+//            }
+//        }
     }
 
-    private fun getFakeNews(): List<News> {
+    private fun getFakeNews(): List<SourceNews> {
         return listOf(
-            News("Lost Ark is getting more servers to ease player congestion", "A popular MMO is facing congestion issues – have you heard of that one before? While Final Fantasy XIV had its fair share of challenges following Endwalker’s launch, it’s now Lost Ark’s turn to grapple with swelling player counts. As per SteamDB, the new PC game is hitting concurrent player counts of 500,000 on Valve’s storefront daily, and that’s before the free-to-play update."),
-            News("NFL injury updates, latest league news from Friday, Feb. 10 ", "\n" +
+            SourceNews("Lost Ark is getting more servers to ease player congestion", "A popular MMO is facing congestion issues – have you heard of that one before? While Final Fantasy XIV had its fair share of challenges following Endwalker’s launch, it’s now Lost Ark’s turn to grapple with swelling player counts. As per SteamDB, the new PC game is hitting concurrent player counts of 500,000 on Valve’s storefront daily, and that’s before the free-to-play update."),
+            SourceNews("NFL injury updates, latest league news from Friday, Feb. 10 ", "\n" +
                     "\n" +
                     "The Denver Broncos are nearing a deal with one of the most tenured coaches in the NFL.\n" +
                     "\n" +
                     "Denver is expected to hire longtime defensive coach Dom Capers as a senior defensive assistant to assist expected defensive coordinator Ejiro Evero, NFL Network Insider Ian Rapoport reported Friday. Capers, 71, worked in the same role with the Lions in 2021.\n"),
-            News("News brief: COVID vaccines for kids, Russia-Ukraine crisis, Canadian protests", "Pfizer adds data to its request to get the OK for its COVID vaccine for young kids. Biden cautions Americans in Ukraine to leave. Truckers shut down border crossings between Canada and the U.S."),
-            News("Deforestation in Brazil’s Amazon hits new record in January", "Brazil recorded the most deforestation ever in the Amazon rainforest for the month of January, according to new government data, as the destruction continues to worsen despite the government’s recent pledges to bring it under control.")
+            SourceNews("News brief: COVID vaccines for kids, Russia-Ukraine crisis, Canadian protests", "Pfizer adds data to its request to get the OK for its COVID vaccine for young kids. Biden cautions Americans in Ukraine to leave. Truckers shut down border crossings between Canada and the U.S."),
+            SourceNews("Deforestation in Brazil’s Amazon hits new record in January", "Brazil recorded the most deforestation ever in the Amazon rainforest for the month of January, according to new government data, as the destruction continues to worsen despite the government’s recent pledges to bring it under control.")
         )
     }
 }

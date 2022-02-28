@@ -30,15 +30,17 @@ class HomeActivity : AppCompatActivity() {
         searchBtn.setOnClickListener {view: View ->
             Log.d("HomeActivity", "Search clicked!")
 
+            val searchTerm = search.getText().toString()
+
             val intent: Intent = Intent(this, SourcesActivity::class.java)
-            intent.putExtra("SEARCH", "Android")
+            intent.putExtra("SEARCH", searchTerm)
             startActivity(intent)
         }
         locBtn.setOnClickListener {view: View ->
             Log.d("HomeActivity", "Location clicked!")
 
-            //val intent: Intent = Intent(this, SourcesActivity::class.java)
-            //startActivity(intent)
+            val intent: Intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
         }
 
         tophlBtn.setOnClickListener {view: View ->

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class NewsAdapter(val news: List<News>) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class SourceNewsAdapter(val news: List<SourceNews>) : RecyclerView.Adapter<SourceNewsAdapter.ViewHolder>() {
 
     class ViewHolder(rootLayout: View) : RecyclerView.ViewHolder(rootLayout) {
         val headline: TextView = rootLayout.findViewById(R.id.headline)
@@ -24,8 +24,8 @@ class NewsAdapter(val news: List<News>) : RecyclerView.Adapter<NewsAdapter.ViewH
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentNews = news[position]
-        holder.headline.setText(currentNews.headline)
-        holder.contentText.setText(currentNews.content)
+        holder.headline.setText(currentNews.name)
+        holder.contentText.setText(currentNews.description)
     }
 
     override fun getItemCount(): Int {

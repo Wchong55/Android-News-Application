@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:ems="10"
+        android:focusableInTouchMode="true"
         android:hint="Search"
         android:inputType="textPersonName"
         android:minHeight="48dp"
