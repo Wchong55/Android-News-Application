@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,11 +22,17 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        //SharedPreferences
+        val preferences = getSharedPreferences("android-news", Context.MODE_PRIVATE)
+
         //UI values
         search = findViewById(R.id.Search)
         searchBtn = findViewById(R.id.search_btn)
         locBtn = findViewById(R.id.location_btn)
         tophlBtn = findViewById(R.id.headline_btn)
+
+        val savedSearchTerm = preferences.getString("SEARCH_TERM", "")
+        search.setText(savedSearchTerm)
 
         searchBtn.setOnClickListener {view: View ->
             Log.d("HomeActivity", "Search clicked!")
@@ -34,6 +41,9 @@ class HomeActivity : AppCompatActivity() {
 
             val intent: Intent = Intent(this, SourcesActivity::class.java)
             intent.putExtra("SEARCH", searchTerm)
+
+            preferences.edit().putString("SEARCH_TERM", searchTerm).apply()
+
             startActivity(intent)
         }
         locBtn.setOnClickListener {view: View ->
@@ -46,8 +56,8 @@ class HomeActivity : AppCompatActivity() {
         tophlBtn.setOnClickListener {view: View ->
             Log.d("HomeActivity", "Top Headlines clicked!")
 
-            //val intent: Intent = Intent(this, SourcesActivity::class.java)
-            //startActivity(intent)
+            val intent: Intent = Intent(this, TopHeadlinesActivity::class.java)
+            startActivity(intent)
         }
 
         searchBtn.isEnabled = false

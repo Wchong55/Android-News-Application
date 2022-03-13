@@ -1,20 +1,26 @@
 package com.example.myapplication
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class MapNewsAdapter(val news: List<MapNews>) : RecyclerView.Adapter<MapNewsAdapter.ViewHolder>() {
+class TopNewsAdapter(val news: List<TopNews>) : RecyclerView.Adapter<TopNewsAdapter.ViewHolder>() {
 
-    class ViewHolder(rootLayout: View) : RecyclerView.ViewHolder(rootLayout) {
+    class ViewHolder(rootLayout:View) : RecyclerView.ViewHolder(rootLayout) {
         val headline: TextView = rootLayout.findViewById(R.id.headline)
         val contentText: TextView = rootLayout.findViewById(R.id.news_content)
         val brand: TextView = rootLayout.findViewById(R.id.news_title)
         val imageView: ImageView = rootLayout.findViewById(R.id.image)
+        val card: CardView = rootLayout.findViewById(R.id.cardView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,6 +46,13 @@ class MapNewsAdapter(val news: List<MapNews>) : RecyclerView.Adapter<MapNewsAdap
                 .load(currentNews.iconUrl)
                 .into(holder.imageView)
         }
+
+//        holder.card.setOnClickListener{view: View ->
+//            override fun onClick(view: View) {
+//                val browse: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(currentNews.url))
+//                startActivity(view, browse)
+//            }
+//        }
     }
 
     override fun getItemCount(): Int {

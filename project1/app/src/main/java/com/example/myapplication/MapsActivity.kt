@@ -32,7 +32,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        recyclerView = findViewById(R.id.recyclerview)
+//        recyclerView = findViewById(R.id.recyclerview)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -40,12 +40,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         //Fake news
-        val news = getFakeNews()
-        val adapter = MapNewsAdapter(news)
-        recyclerView.setAdapter(adapter)
+//        val news = getFakeNews()
+//        val adapter = MapNewsAdapter(news)
+//        recyclerView.setAdapter(adapter)
 
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
+//        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//
 //        val newsManager = NewsManager()
 //        val apiKey = getString(R.string.news_key)
 //        doAsync{
@@ -70,14 +70,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //            }
 //        }
     }
-
-    private fun getFakeNews(): List<MapNews> {
-        return listOf(
-            MapNews("ESPN","Lost Ark is getting more servers to ease player congestion", "A popular MMO is facing congestion issues – have you heard of that one before? While Final Fantasy XIV had its fair share of challenges following Endwalker’s launch, it’s now Lost Ark’s turn to grapple with swelling player counts."),
-            MapNews("ESPN", "News brief: COVID vaccines for kids, Russia-Ukraine crisis, Canadian protests", "Pfizer adds data to its request to get the OK for its COVID vaccine for young kids. Biden cautions Americans in Ukraine to leave."),
-            MapNews("ESPN","Deforestation in Brazil’s Amazon hits new record in January", "Brazil recorded the most deforestation ever in the Amazon rainforest for the month of January, according to new government data, as the destruction continues to worsen despite the government’s recent pledges to bring it under control.")
-        )
-    }
+//
+//    private fun getFakeNews(): List<MapNews> {
+//        return listOf(
+//            MapNews("ESPN","Lost Ark is getting more servers to ease player congestion", "A popular MMO is facing congestion issues – have you heard of that one before? While Final Fantasy XIV had its fair share of challenges following Endwalker’s launch, it’s now Lost Ark’s turn to grapple with swelling player counts."),
+//            MapNews("ESPN", "News brief: COVID vaccines for kids, Russia-Ukraine crisis, Canadian protests", "Pfizer adds data to its request to get the OK for its COVID vaccine for young kids. Biden cautions Americans in Ukraine to leave."),
+//            MapNews("ESPN","Deforestation in Brazil’s Amazon hits new record in January", "Brazil recorded the most deforestation ever in the Amazon rainforest for the month of January, according to new government data, as the destruction continues to worsen despite the government’s recent pledges to bring it under control.")
+//        )
+//    }
 
 
 
@@ -92,6 +92,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        recyclerView = findViewById(R.id.recyclerview)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        val newsManager = NewsManager()
+        val apiKey = getString(R.string.news_key)
 
         mMap.setOnMapLongClickListener { coords: LatLng->
             mMap.clear()
@@ -109,6 +115,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     Log.e("MapsActivity", "Geocoding failed!", exception)
                     listOf()
                 }
+                var news: List<MapNews> = try {
+                    newsManager.retrieveMapNews(country, apiKey)
+                } catch(exception: Exception) {
+                    Log.e("MapsActivity", "Retrieving News failed", exception)
+                    listOf<MapNews>()
+                }
 
                 runOnUiThread {
                     if (results.isNotEmpty()) {
@@ -123,11 +135,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         mMap.addMarker(marker)
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 10.0f))
-                    } else {
-                        Toast.makeText(this@MapsActivity, "No results found!", Toast.LENGTH_LONG).show()
+                        if (news.isNotEmpty()) {
+                            val adapter = MapNewsAdapter(news)
+                            recyclerView.setAdapter(adapter)
+                            recyclerView.layoutManager = LinearLayoutManager(this@MapsActivity, LinearLayoutManager.HORIZONTAL, false)
+                        }
+                        else {
+                            Toast.makeText(this@MapsActivity, "No results found!", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
         }
     }
 }
+

@@ -20,8 +20,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
-        android:layout_width="337dp"
-        android:layout_height="172dp"
+        android:layout_width="362dp"
+        android:layout_height="174dp"
         android:layout_marginBottom="32dp"
         android:focusableInTouchMode="false"
         android:orientation="horizontal"
